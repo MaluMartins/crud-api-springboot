@@ -19,17 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.crud.dtos.ProductRecordDto;
 import com.springboot.crud.models.ProductModel;
 import com.springboot.crud.repositories.ProductRepository;
+import com.springboot.crud.services.ProductService;
 
 import jakarta.validation.Valid;
 
 @RestController
 public class ProductController {
-
+	
 	@Autowired
-	ProductRepository productRepository;
+	private ProductService productService;
 	
 	//POST (Create)
-	@PostMapping("/products")
+	/*@PostMapping("/products")
 	public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
 		//popular campos do model com dados recebidos no DTO
 		ProductModel productModel = new ProductModel();
@@ -41,18 +42,18 @@ public class ProductController {
 	@GetMapping("/products")
 	public ResponseEntity<List<ProductModel>> getAllProducts() {
 		return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
-	}
+	}*/
 	
 	//GET ONE
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Object> getOneProduct(@PathVariable(value = "id") UUID id) {
-		Optional<ProductModel> productO = productRepository.findById(id);
-		if (productO.isEmpty()) {
+		ProductModel product = productService.findById(id);
+		/*if (productO.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(productO.get());
+		}*/
+		return ResponseEntity.status(HttpStatus.OK).body(product);
 	}
-	
+	/*
 	//PUT (Update) -> post + get one
 	@PutMapping("/products/{id}")
 	public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id, @RequestBody @Valid ProductRecordDto productRecordDto) {
@@ -74,6 +75,6 @@ public class ProductController {
 		}
 		productRepository.delete(productO.get());
 		return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully");
-	}
+	}*/
 	
 }	
