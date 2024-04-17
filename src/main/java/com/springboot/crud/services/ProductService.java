@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.crud.models.ProductModel;
 import com.springboot.crud.repositories.ProductRepository;
+import com.springboot.crud.services.exceptions.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -15,7 +16,8 @@ public class ProductService {
 	ProductRepository productRepository;
 	
 	public ProductModel findById(UUID id) {
-		return productRepository.findById(id).get();
+		return productRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("Id not found: " + id));
 		
 	}
 }
